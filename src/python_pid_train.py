@@ -67,7 +67,7 @@ pos_y_cube = np.zeros((trials, len(t)))
 F_ga_t = F_g * np.sin(incl_angle)  # Tangential component of the gravity force
 init_pos_x = 120
 init_pos_y = 120 * np.tan(incl_angle) + 6.5
-init_displ_rail = (init_pos_x**2 + init_pos_y**2)**(0.5)
+init_displ_rail = (init_pos_x ** 2 + init_pos_y ** 2) ** (0.5)
 init_vel_rail = 0
 init_a_rail = 0
 
@@ -75,12 +75,12 @@ init_pos_x_global = init_pos_x  # Used for determining the dimensions of the ani
 
 trials_magn = trials
 history = np.ones(trials)
-while(trials > 0):  # Determines how many times cube falls down
+while trials > 0:  # Determines how many times cube falls down
     pos_x_cube_ref = set_x_ref(incl_angle)[0]  # Cube's initial x position
     pos_y_cube_ref = set_x_ref(incl_angle)[1]  # Cube's initial y position
     times = trials_magn - trials
     pos_x_cube[times] = pos_x_cube_ref
-    pos_y_cube[times] = pos_y_cube_ref - g / 2 * t**2
+    pos_y_cube[times] = pos_y_cube_ref - g / 2 * t ** 2
     win = False
     delta = 1
 
@@ -114,8 +114,14 @@ while(trials > 0):  # Determines how many times cube falls down
         pos_y_train[times][i] = displ_rail[times][i] * np.sin(incl_angle) + 6.5
 
         # Try to catch it
-        if (pos_x_train[times][i] - 5 < pos_x_cube[times][i] + 3 and pos_x_train[times][i] + 5 > pos_x_cube[times][i] - 3) or win == True:
-            if (pos_y_train[times][i] + 3 < pos_y_cube[times][i] - 2 and pos_y_train[times][i] + 8 > pos_y_cube[times][i] + 2) or win == True:
+        if (
+            pos_x_train[times][i] - 5 < pos_x_cube[times][i] + 3
+            and pos_x_train[times][i] + 5 > pos_x_cube[times][i] - 3
+        ) or win == True:
+            if (
+                pos_y_train[times][i] + 3 < pos_y_cube[times][i] - 2
+                and pos_y_train[times][i] + 8 > pos_y_cube[times][i] + 2
+            ) or win == True:
                 win = True
                 if delta == 1:
                     change = pos_x_train[times][i] - pos_x_cube[times][i]
@@ -138,15 +144,27 @@ frame_amount = len(t) * trials_global
 
 def update_plot(num):
 
-    platform.set_data([pos_x_train[int(num / len_t)][num - int(num / len_t) * len_t] - 3.1,
-                       pos_x_train[int(num / len_t)][num - int(num / len_t) * len_t] + 3.1],
-                      [pos_y_train[int(num / len_t)][num - int(num / len_t) * len_t],
-                       pos_y_train[int(num / len_t)][num - int(num / len_t) * len_t]])
+    platform.set_data(
+        [
+            pos_x_train[int(num / len_t)][num - int(num / len_t) * len_t] - 3.1,
+            pos_x_train[int(num / len_t)][num - int(num / len_t) * len_t] + 3.1,
+        ],
+        [
+            pos_y_train[int(num / len_t)][num - int(num / len_t) * len_t],
+            pos_y_train[int(num / len_t)][num - int(num / len_t) * len_t],
+        ],
+    )
 
-    cube.set_data([pos_x_cube[int(num / len_t)][num - int(num / len_t) * len_t] - 1,
-                   pos_x_cube[int(num / len_t)][num - int(num / len_t) * len_t] + 1],
-                  [pos_y_cube[int(num / len_t)][num - int(num / len_t) * len_t],
-                   pos_y_cube[int(num / len_t)][num - int(num / len_t) * len_t]])
+    cube.set_data(
+        [
+            pos_x_cube[int(num / len_t)][num - int(num / len_t) * len_t] - 1,
+            pos_x_cube[int(num / len_t)][num - int(num / len_t) * len_t] + 1,
+        ],
+        [
+            pos_y_cube[int(num / len_t)][num - int(num / len_t) * len_t],
+            pos_y_cube[int(num / len_t)][num - int(num / len_t) * len_t],
+        ],
+    )
 
     if trials_magn * len_t == num + 1 and num > 0:  # All attempts must be successful
         if sum(history) == 0:
@@ -154,23 +172,27 @@ def update_plot(num):
         else:
             again.set_text('DON’T GIVE UP! YOU CAN DO IT!')
 
-    displ_rail_f.set_data(t[0:(num - int(num / len_t) * len_t)],
-                          displ_rail[int(num / len_t)][0:(num - int(num / len_t) * len_t)])
+    displ_rail_f.set_data(
+        t[0 : (num - int(num / len_t) * len_t)], displ_rail[int(num / len_t)][0 : (num - int(num / len_t) * len_t)]
+    )
 
-    v_rail_f.set_data(t[0:(num - int(num / len_t) * len_t)],
-                      v_rail[int(num / len_t)][0:(num - int(num / len_t) * len_t)])
+    v_rail_f.set_data(
+        t[0 : (num - int(num / len_t) * len_t)], v_rail[int(num / len_t)][0 : (num - int(num / len_t) * len_t)]
+    )
 
-    a_rail_f.set_data(t[0:(num - int(num / len_t) * len_t)],
-                      a_rail[int(num / len_t)][0:(num - int(num / len_t) * len_t)])
+    a_rail_f.set_data(
+        t[0 : (num - int(num / len_t) * len_t)], a_rail[int(num / len_t)][0 : (num - int(num / len_t) * len_t)]
+    )
 
-    e_f.set_data(t[0:(num - int(num / len_t) * len_t)],
-                 e[int(num / len_t)][0:(num - int(num / len_t) * len_t)])
+    e_f.set_data(t[0 : (num - int(num / len_t) * len_t)], e[int(num / len_t)][0 : (num - int(num / len_t) * len_t)])
 
-    e_dot_f.set_data(t[0:(num - int(num / len_t) * len_t)],
-                     e_dot[int(num / len_t)][0:(num - int(num / len_t) * len_t)])
+    e_dot_f.set_data(
+        t[0 : (num - int(num / len_t) * len_t)], e_dot[int(num / len_t)][0 : (num - int(num / len_t) * len_t)]
+    )
 
-    e_int_f.set_data(t[0:(num - int(num / len_t) * len_t)],
-                     e_int[int(num / len_t)][0:(num - int(num / len_t) * len_t)])
+    e_int_f.set_data(
+        t[0 : (num - int(num / len_t) * len_t)], e_int[int(num / len_t)][0 : (num - int(num / len_t) * len_t)]
+    )
 
     return displ_rail_f, v_rail_f, a_rail_f, e_f, e_dot_f, e_int_f, platform, cube, success, again
 
@@ -189,8 +211,8 @@ plt.grid(True)
 copyright = ax_main.text(0, 122, '© Mark Misin Engineering', size=12)
 
 rail = ax_main.plot([0, init_pos_x_global], [5, init_pos_x_global * np.tan(incl_angle) + 5], 'k', linewidth=6)
-platform, = ax_main.plot([], [], 'b', linewidth=18)
-cube, = ax_main.plot([], [], 'k', linewidth=14)
+(platform,) = ax_main.plot([], [], 'b', linewidth=18)
+(cube,) = ax_main.plot([], [], 'k', linewidth=14)
 
 bbox_props_success = dict(boxstyle='square', fc=(0.9, 0.9, 0.9), ec='g', lw='1')
 success = ax_main.text(40, 60, '', size='20', color='g', bbox=bbox_props_success)
@@ -200,49 +222,48 @@ again = ax_main.text(30, 60, '', size='20', color='r', bbox=bbox_props_again)
 
 # Plot windows
 ax1v = fig.add_subplot(gs[0, 2], facecolor=(0.9, 0.9, 0.9))
-displ_rail_f, = ax1v.plot([], [], '-b', linewidth=2, label='displ. on rails [m]')
+(displ_rail_f,) = ax1v.plot([], [], '-b', linewidth=2, label='displ. on rails [m]')
 plt.xlim(t0, t_end)
 plt.ylim(np.min(displ_rail) - abs(np.min(displ_rail)) * 0.1, np.max(displ_rail) + abs(np.max(displ_rail)) * 0.1)
 plt.grid(True)
 plt.legend(loc='lower left', fontsize='small')
 
 ax2v = fig.add_subplot(gs[1, 2], facecolor=(0.9, 0.9, 0.9))
-v_rail_f, = ax2v.plot([], [], '-b', linewidth=2, label='velocity on rails [m/s]')
+(v_rail_f,) = ax2v.plot([], [], '-b', linewidth=2, label='velocity on rails [m/s]')
 plt.xlim(t0, t_end)
 plt.ylim(np.min(v_rail) - abs(np.min(v_rail)) * 0.1, np.max(v_rail) + abs(np.max(v_rail)) * 0.1)
 plt.grid(True)
 plt.legend(loc='lower left', fontsize='small')
 
 ax3v = fig.add_subplot(gs[2, 2], facecolor=(0.9, 0.9, 0.9))
-a_rail_f, = ax3v.plot([], [], '-b', linewidth=2, label='accel. on rails [m/s^2] = F_net/m_platf.')
+(a_rail_f,) = ax3v.plot([], [], '-b', linewidth=2, label='accel. on rails [m/s^2] = F_net/m_platf.')
 plt.xlim(t0, t_end)
 plt.ylim(np.min(a_rail) - abs(np.min(a_rail)) * 0.1, np.max(a_rail) + abs(np.max(a_rail)) * 0.1)
 plt.grid(True)
 plt.legend(loc='lower left', fontsize='small')
 
 ax1h = fig.add_subplot(gs[3, 0], facecolor=(0.9, 0.9, 0.9))
-e_f, = ax1h.plot([], [], '-b', linewidth=2, label='horizontal error [m]')
+(e_f,) = ax1h.plot([], [], '-b', linewidth=2, label='horizontal error [m]')
 plt.xlim(t0, t_end)
 plt.ylim(np.min(e) - abs(np.min(e)) * 0.1, np.max(e) + abs(np.max(e)) * 0.1)
 plt.grid(True)
 plt.legend(loc='lower left', fontsize='small')
 
 ax2h = fig.add_subplot(gs[3, 1], facecolor=(0.9, 0.9, 0.9))
-e_dot_f, = ax2h.plot([], [], '-b', linewidth=2, label='change of horiz. error [m/s]')
+(e_dot_f,) = ax2h.plot([], [], '-b', linewidth=2, label='change of horiz. error [m/s]')
 plt.xlim(t0, t_end)
 plt.ylim(np.min(e_dot) - abs(np.min(e_dot)) * 0.1, np.max(e_dot) + abs(np.max(e_dot)) * 0.1)
 plt.grid(True)
 plt.legend(loc='lower left', fontsize='small')
 
 ax3h = fig.add_subplot(gs[3, 2], facecolor=(0.9, 0.9, 0.9))
-e_int_f, = ax3h.plot([], [], '-b', linewidth=2, label='sum of horiz. error [m*s]')
+(e_int_f,) = ax3h.plot([], [], '-b', linewidth=2, label='sum of horiz. error [m*s]')
 plt.xlim(t0, t_end)
 plt.ylim(np.min(e_int) - abs(np.min(e_int)) * 0.1, np.max(e_int) + abs(np.max(e_int)) * 0.1)
 plt.grid(True)
 plt.legend(loc='lower left', fontsize='small')
 
-pid_ani = animation.FuncAnimation(fig, update_plot,
-                                  frames=frame_amount, interval=20, repeat=False, blit=True)
+pid_ani = animation.FuncAnimation(fig, update_plot, frames=frame_amount, interval=20, repeat=False, blit=True)
 plt.show()
 
 

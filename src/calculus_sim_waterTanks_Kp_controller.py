@@ -68,7 +68,9 @@ error3 = np.zeros(len(t))  # Create a 0 vector to store errors in the simulation
 m_dot3 = Kp3 * error3  # Compute a 0 vector to store massflow control inputs
 print(len(t))
 # Start the simulation
-for i in range(1, len(t)):  # Iterate throughout the simulation (i goes from 1 till the length of the time vector, last element not counted, if len(t)=1251, then you go till 1250)
+for i in range(
+    1, len(t)
+):  # Iterate throughout the simulation (i goes from 1 till the length of the time vector, last element not counted, if len(t)=1251, then you go till 1250)
     if i < 300:
         # Determine reference value vector for tank 1 and 2 for this region, if i is less than 300
         vol_r1[i] = vol_r1_i
@@ -128,10 +130,20 @@ def update_plot(num):
     vol_r3.set_data([-radius * width_ratio, radius * width_ratio], [vol_r3_2[num], vol_r3_2[num]])
     vol_r3_line.set_data([t0, t_end], [vol_r3_2[num], vol_r3_2[num]])
 
-    return vol_r1, tank_12, vol_r1_line, tnk_1,\
-        vol_r2, tank_22, vol_r2_line, tnk_2,\
-        vol_r3, tank_32, vol_r3_line, tnk_3,\
-
+    return (
+        vol_r1,
+        tank_12,
+        vol_r1_line,
+        tnk_1,
+        vol_r2,
+        tank_22,
+        vol_r2_line,
+        tnk_2,
+        vol_r3,
+        tank_32,
+        vol_r3_line,
+        tnk_3,
+    )
     # return vol_r1,tank_12,tnk_1,vol_r1_line\
 
 
@@ -141,8 +153,8 @@ gs = gridspec.GridSpec(2, 3)
 
 # Create object for Tank1
 ax0 = fig.add_subplot(gs[0, 0], facecolor=(0.9, 0.9, 0.9))
-vol_r1, = ax0.plot([], [], 'r', linewidth=2)
-tank_12, = ax0.plot([], [], 'royalblue', linewidth=260, zorder=0)
+(vol_r1,) = ax0.plot([], [], 'r', linewidth=2)
+(tank_12,) = ax0.plot([], [], 'royalblue', linewidth=260, zorder=0)
 plt.xlim(-radius * width_ratio, radius * width_ratio)
 plt.ylim(bottom, final_volume)
 plt.xticks(np.arange(-radius, radius + 1, radius))
@@ -153,8 +165,8 @@ copyright = ax0.text(-radius * width_ratio, (final_volume + 10) * 3.2 / 3, '© M
 
 # Create object for Tank2
 ax1 = fig.add_subplot(gs[0, 1], facecolor=(0.9, 0.9, 0.9))
-vol_r2, = ax1.plot([], [], 'r', linewidth=2)
-tank_22, = ax1.plot([], [], 'royalblue', linewidth=260, zorder=0)
+(vol_r2,) = ax1.plot([], [], 'r', linewidth=2)
+(tank_22,) = ax1.plot([], [], 'royalblue', linewidth=260, zorder=0)
 plt.xlim(-radius * width_ratio, radius * width_ratio)
 plt.ylim(bottom, final_volume)
 plt.xticks(np.arange(-radius, radius + 1, radius))
@@ -164,8 +176,8 @@ plt.title('Tank 2')
 
 # Create object for Tank3
 ax2 = fig.add_subplot(gs[0, 2], facecolor=(0.9, 0.9, 0.9))
-vol_r3, = ax2.plot([], [], 'r', linewidth=2)
-tank_32, = ax2.plot([], [], 'royalblue', linewidth=260, zorder=0)
+(vol_r3,) = ax2.plot([], [], 'r', linewidth=2)
+(tank_32,) = ax2.plot([], [], 'royalblue', linewidth=260, zorder=0)
 plt.xlim(-radius * width_ratio, radius * width_ratio)
 plt.ylim(bottom, final_volume)
 plt.xticks(np.arange(-radius, radius + 1, radius))
@@ -174,18 +186,17 @@ plt.title('Tank 3')
 
 # Create volume function
 ax3 = fig.add_subplot(gs[1, :], facecolor=(0.9, 0.9, 0.9))
-vol_r1_line, = ax3.plot([], [], 'r', linewidth=2)
-vol_r2_line, = ax3.plot([], [], 'r', linewidth=2)
-vol_r3_line, = ax3.plot([], [], 'r', linewidth=2)
-tnk_1, = ax3.plot([], [], 'blue', linewidth=4, label='Tank 1')
-tnk_2, = ax3.plot([], [], 'green', linewidth=4, label='Tank 2')
-tnk_3, = ax3.plot([], [], 'red', linewidth=4, label='Tank 3')
+(vol_r1_line,) = ax3.plot([], [], 'r', linewidth=2)
+(vol_r2_line,) = ax3.plot([], [], 'r', linewidth=2)
+(vol_r3_line,) = ax3.plot([], [], 'r', linewidth=2)
+(tnk_1,) = ax3.plot([], [], 'blue', linewidth=4, label='Tank 1')
+(tnk_2,) = ax3.plot([], [], 'green', linewidth=4, label='Tank 2')
+(tnk_3,) = ax3.plot([], [], 'red', linewidth=4, label='Tank 3')
 plt.xlim(0, t_end)
 plt.ylim(0, final_volume)
 plt.ylabel('tank volume [m^3]')
 plt.grid(True)
 plt.legend(loc='upper right', fontsize='small')
 
-plane_ani = animation.FuncAnimation(fig, update_plot,
-                                    frames=frame_amount, interval=20, repeat=True, blit=True)
+plane_ani = animation.FuncAnimation(fig, update_plot, frames=frame_amount, interval=20, repeat=True, blit=True)
 plt.show()
